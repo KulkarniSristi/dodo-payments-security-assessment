@@ -17,6 +17,14 @@ spec:
           - resources:
               kinds:
                 - Pod
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - argocd
+                - kyverno
+                - kube-system
+                - ingress-nginx
       validate:
         message: "Containers must set securityContext.runAsNonRoot=true (missing securityContext is rejected)."
         pattern:
