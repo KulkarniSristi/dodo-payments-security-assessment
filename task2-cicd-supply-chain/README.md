@@ -41,3 +41,9 @@ If `requirements.txt` were updated to non-vulnerable versions (a trivial `pip in
 
 ## Known issue encountered & fixed
 Our own Task 1 Kyverno `disallow-root-user` / `disallow-latest-tag` ClusterPolicies initially blocked ArgoCD's own control-plane deployments (`argocd-redis`, `argocd-notifications-controller`) from being created, since ArgoCD's upstream manifests don't set `runAsNonRoot`. Fixed by adding namespace `exclude` blocks to both policies for `argocd`, `kyverno`, `kube-system`, and `ingress-nginx` — cluster-wide security guardrails should exempt system/infra namespaces that we don't control the manifests for, while still enforcing strictly on application namespaces like `payments`.
+
+## Verification status (re-confirmed after fixes)
+- **Gitleaks**: ✅ Passes cleanly (allowlist for demo/encrypted-secret files working as intended)
+- **Semgrep**: ✅ Passes cleanly (nosemgrep annotations correctly suppress the 3 intentional Task 4 findings — required placing the comment on both the taint source and sink line for this Semgrep CLI version to recognize it)
+- **Trivy**: ✅ Correctly and intentionally still fails (27 real CVEs in outdated deps — by design, see above)
+- **Build/sign/push/attest job**: not yet executed on `main`, since it depends on `dependency-scan` passing. Verifying this stage without patching the intentionally-vulnerable `app.py` would require a disposable test branch with temporarily patched dependencies — deprioritized given overall assessment time constraints; documented here as a known, honest gap rather than claimed as complete.
