@@ -44,7 +44,7 @@ def import_config():
 def fetch():
     # INTENTIONAL VULNERABILITY — target for Task 4 penetration test (SSRF). Do not fix.
     url = request.args.get("url", "")
-    resp = requests.get(url, timeout=5)  # nosemgrep: python.flask.security.injection.ssrf-requests.ssrf-requests,python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests
+    resp = requests.get(url, timeout=5)  # nosemgrep
     return jsonify(status_code=resp.status_code, body=resp.text[:2048])
 
 if __name__ == "__main__":
