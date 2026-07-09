@@ -42,10 +42,15 @@ def import_config():
 
 @app.route("/fetch")
 def fetch():
+    # nosemgrep: python.flask.security.injection.ssrf-requests.ssrf-requests
+    # nosemgrep: python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests
+    # INTENTIONAL VULNERABILITY — target for Task 4 penetration test (SSRF). Do not fix.
     url = request.args.get("url", "")
     resp = requests.get(url, timeout=5)
     return jsonify(status_code=resp.status_code, body=resp.text[:2048])
 
 
 if __name__ == "__main__":
+    # nosemgrep: python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host
+    # INTENTIONAL — required for container networking (0.0.0.0 bind inside pod). Ingress + NetworkPolicy restrict external access (see Task 1).    
     app.run(host="0.0.0.0", port=8080)

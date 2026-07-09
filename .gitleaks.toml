@@ -1,0 +1,16 @@
+title = "gitleaks config for dodo-payments-security-assessment"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known/intentional findings — not real leaked secrets"
+paths = [
+  '''bonus-demo/insecure-deployment-for-demo\.yaml''',
+  '''deploy/sealedsecret-ledger-api\.yaml''',
+  '''deployment\.yaml'''
+]
+regexes = [
+  '''sk_live_9f3a2b7c1e4d8REDACTED''',
+  '''P@ssw0rd123'''
+]
