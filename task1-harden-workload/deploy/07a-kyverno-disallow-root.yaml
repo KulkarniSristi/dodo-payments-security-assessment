@@ -25,6 +25,7 @@ spec:
                 - kyverno
                 - kube-system
                 - ingress-nginx
+                - istio-system
       validate:
         message: "Containers must set securityContext.runAsNonRoot=true (missing securityContext is rejected)."
         pattern:
