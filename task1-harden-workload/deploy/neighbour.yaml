@@ -20,9 +20,24 @@ spec:
     metadata:
       labels:
         app: reporting
+      annotations:
+        istio-restart: "1"
     spec:
       serviceAccountName: reporting
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10002
+        runAsGroup: 10002
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: client
           image: curlimages/curl:8.8.0
           command: ["sleep", "infinity"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault

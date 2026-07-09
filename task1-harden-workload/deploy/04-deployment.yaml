@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: ledger-api
+      annotations:
+        istio-restart: "1"
     spec:
       serviceAccountName: ledger-api
       automountServiceAccountToken: false
