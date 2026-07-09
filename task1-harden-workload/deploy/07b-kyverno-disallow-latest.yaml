@@ -25,6 +25,7 @@ spec:
                 - kyverno
                 - kube-system
                 - ingress-nginx
+                - istio-system
       validate:
         message: "Images must not use the ':latest' tag; specify an explicit version."
         foreach:
