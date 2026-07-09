@@ -29,3 +29,15 @@ If `requirements.txt` were updated to non-vulnerable versions (a trivial `pip in
 ## Design decisions
 - Image tags use `git sha`, never `:latest` — enforced by our own Task 1 Kyverno `disallow-latest-tag` policy, so the pipeline had to comply with its own guardrails.
 - `require-image-signature` Kyverno policy (Task 1) remains in **Audit** mode until an image is actually signed and pushed through this pipeline; it will be flipped to Enforce once that happens.
+
+## GitOps — ArgoCD
+
+`argocd/application.yaml` defines an ArgoCD `Application` pointing at this repo's `task1-harden-workload/deploy` path (branch: `main`) as the source of truth for the `payments` namespace, with `automated: {prune: true, selfHeal: true}`.
+
+**Drift detection + self-heal — proven:**
+1. Manually scaled `ledger-api` from 3 → 5 replicas via `kubectl scale`
+2. ArgoCD detected the drift and terminated the extra pod within ~8 seconds, reverting to the git-declared replica count (3) automatically — no manual intervention
+3. `kubectl get application ledger-api -n argocd` remained `Synced / Healthy` throughout, confirming ArgoCD treats git as the single source of truth and actively corrects manual out-of-band changes
+
+## Known issue encountered & fixed
+Our own Task 1 Kyverno `disallow-root-user` / `disallow-latest-tag` ClusterPolicies initially blocked ArgoCD's own control-plane deployments (`argocd-redis`, `argocd-notifications-controller`) from being created, since ArgoCD's upstream manifests don't set `runAsNonRoot`. Fixed by adding namespace `exclude` blocks to both policies for `argocd`, `kyverno`, `kube-system`, and `ingress-nginx` — cluster-wide security guardrails should exempt system/infra namespaces that we don't control the manifests for, while still enforcing strictly on application namespaces like `payments`.
