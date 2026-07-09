@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-signature
+  annotations:
+    policies.kyverno.io/title: Require Signed Images
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/description: >-
+      Images must be signed (verified via Cosign keyless signature).
+      Set to Audit mode until the CI pipeline (Task 2) signs images with Cosign.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+    - name: check-image-signature
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      verifyImages:
+        - imageReferences:
+            - "ghcr.io/*"
+          mutateDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: "https://github.com/*"
+                    issuer: "https://token.actions.githubusercontent.com"
+                    rekor:
+                      url: https://rekor.sigstore.dev
