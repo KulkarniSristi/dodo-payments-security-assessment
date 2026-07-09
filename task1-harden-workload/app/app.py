@@ -43,7 +43,7 @@ def import_config():
 @app.route("/fetch")
 def fetch():
     # INTENTIONAL VULNERABILITY — target for Task 4 penetration test (SSRF). Do not fix.
-    url = request.args.get("url", "")
+    url = request.args.get("url", "")  # nosemgrep
     resp = requests.get(url, timeout=5)  # nosemgrep
     return jsonify(status_code=resp.status_code, body=resp.text[:2048])
 
