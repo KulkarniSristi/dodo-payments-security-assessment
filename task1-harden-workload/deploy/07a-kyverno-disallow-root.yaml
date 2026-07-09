@@ -6,7 +6,9 @@ metadata:
     policies.kyverno.io/title: Disallow Root User
     policies.kyverno.io/severity: high
     policies.kyverno.io/description: >-
-      Containers must not run as root. runAsNonRoot must be explicitly true.
+      Containers must not run as root. runAsNonRoot must be explicitly true,
+      either at the pod level (inherited by all containers, e.g. Istio-injected
+      sidecars) or explicitly per-container.
 spec:
   validationFailureAction: Enforce
   background: true
@@ -27,9 +29,12 @@ spec:
                 - ingress-nginx
                 - istio-system
       validate:
-        message: "Containers must set securityContext.runAsNonRoot=true (missing securityContext is rejected)."
-        pattern:
-          spec:
-            containers:
-              - securityContext:
-                  runAsNonRoot: true
+        message: "Containers must set securityContext.runAsNonRoot=true, either at pod level or per-container (missing entirely is rejected)."
+        anyPattern:
+          - spec:
+              securityContext:
+                runAsNonRoot: true
+          - spec:
+              containers:
+                - securityContext:
+                    runAsNonRoot: true
