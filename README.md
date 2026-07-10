@@ -21,7 +21,7 @@ ledger-api and a reporting neighbour service deployed with non-root, read-only-r
 
 Secrets never touch git - Sealed Secrets encrypts STRIPE_API_KEY / DB_PASSWORD via kubeseal. Kyverno ClusterPolicies enforce non-root pods, reject :latest/untagged images, and verify image signatures (Enforce mode).
 
-Bonus work completed: three RBAC personas (payments-developer, payments-operator, payments-admin) defined and applied as Roles with correctly scoped verb sets (see Known Gaps below for the one incomplete piece); Pod Security Standards (restricted) enforced at the namespace level with zero violations; a live admission-rejection demo where an insecure raw pod (nginx:latest, no securityContext) was blocked by Kyverno citing both policy violations.
+Bonus work completed: three RBAC personas (payments-developer, payments-operator, payments-admin) defined and applied as Roles with correctly scoped verb sets (see Known Gaps below for the one incomplete piece); Pod Security Standards (baseline) enforced at the namespace level - restricted was attempted but conflicts with the istio-init container's need for root/NET_ADMIN to configure sidecar iptables redirection, a known Istio limitation without istio-cni mode (see Known Gaps); a live admission-rejection demo where an insecure raw pod (nginx:latest, no securityContext) was blocked by Kyverno citing both policy violations.
 
 Full details: [task1-harden-workload/README.md](./task1-harden-workload/README.md)
 
@@ -83,6 +83,9 @@ Three Roles (payments-developer, payments-operator, payments-admin) are defined 
 
 **Kyverno require-image-signature exclusion (Task 1):**
 This ClusterPolicy was originally cluster-wide and blocked ArgoCD's own dex-server pod (unsigned), since ArgoCD's control-plane images aren't part of the signed supply chain this assessment covers. Added an exclude block for the argocd and kube-system namespaces so the policy only enforces on application workloads. With more time: sign or vendor-verify ArgoCD's own images too, so the exclusion isn't needed.
+
+**Pod Security Standards - restricted vs baseline (Task 1 bonus):**
+restricted was attempted at the namespace level but the istio-init container (runAsNonRoot=false, runAsUser=0, requires NET_ADMIN/NET_RAW to configure iptables for sidecar traffic redirection) fails it - a known Istio limitation without istio-cni plugin mode installed. Verified ledger-api itself is fully restricted-compliant in isolation (non-root, all capabilities dropped). Settled on baseline as the accurate, currently-enforced level. With more time: install Istio in istio-cni mode, which moves the privileged iptables setup into a DaemonSet in kube-system (already excluded from PSS) instead of a per-pod init container in payments, allowing restricted to be re-applied cleanly.
 
 **Task 4 recon coverage:**
 Re-run the crt.sh query (likely rate-limited, not a real dead end) and add amass for broader subdomain coverage; extend testssl.sh review to all 56 live hosts, not just 2.

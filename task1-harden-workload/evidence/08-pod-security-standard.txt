@@ -1,0 +1,12 @@
+NAME       STATUS   AGE   LABELS
+payments   Active   31h   istio-injection=enabled,kubernetes.io/metadata.name=payments,pod-security.kubernetes.io/enforce-version=latest,pod-security.kubernetes.io/enforce=baseline
+
+--- restricted attempt (for reference, documents the istio-init conflict) ---
+kubectl label namespace payments pod-security.kubernetes.io/enforce=restricted --overwrite
+Warning: existing pods in namespace payments violate the new PodSecurity enforce level restricted:latest
+Warning: ledger-api pods (and 3 other pods): unrestricted capabilities, runAsNonRoot != true, runAsUser=0
+Root cause confirmed via container-level inspection: ledger-api container itself is compliant
+(runAsNonRoot=true, capabilities drop ALL) - violation is istio-init (runAsNonRoot=false, runAsUser=0),
+which requires root + NET_ADMIN/NET_RAW to configure iptables redirection for the sidecar.
+This is a known Istio limitation without istio-cni plugin mode. Settled on 'baseline' enforcement
+as the accurate, defensible level given this constraint.

@@ -9,14 +9,14 @@
 - **Kyverno guardrails** (ClusterPolicies, Enforce mode):
   - `disallow-root-user` — rejects pods without explicit `runAsNonRoot: true`
   - `disallow-latest-tag` — rejects `:latest` or untagged images
-  - `require-image-signature` — Audit mode (will switch to Enforce once Task 2's Cosign signing is live)
+  - `require-image-signature` — Enforce mode (verifies Cosign signatures; excludes argocd/kube-system namespaces since their control-plane images aren't part of this assessment's signed supply chain)
 - **Ingress** via nginx ingress controller, verified working end-to-end
 - **NetworkPolicy**: default-deny + explicit allow (ingress-nginx → ledger-api on 8080) + DNS egress allow. 
   ⚠️ **Known limitation**: kind's default CNI (kindnet) does not enforce NetworkPolicy — resources are applied correctly but not enforced at this layer. Real enforcement is demonstrated in Task 3 via Istio AuthorizationPolicy + PeerAuthentication.
 
 ## Bonus items completed
 - **RBAC personas**: `payments-developer` (read-only), `payments-operator` (read/update/delete), `payments-admin` (full) — least-privilege Roles scoped to the `payments` namespace
-- **Pod Security Standards (restricted)** enforced at namespace level — verified zero violations after hardening
+- **Pod Security Standards (baseline)** enforced at namespace level. `restricted` was attempted but the istio-init container (requires root + NET_ADMIN/NET_RAW for iptables sidecar redirection) is incompatible with it — a known Istio limitation without istio-cni plugin mode. ledger-api itself is fully restricted-compliant in isolation (non-root, all capabilities dropped); baseline is the honest, currently-enforced namespace level. See task1-harden-workload/evidence/08-pod-security-standard.txt
 - **Admission rejection demo**: applied a raw insecure Pod (`nginx:latest`, no securityContext) — Kyverno blocked it citing both `disallow-latest-tag` and `disallow-root-user` violations (see screenshot below)
 
 ## Evidence
