@@ -105,6 +105,7 @@ jobs:
           trivyignores: ${{ env.APP_DIR }}/.trivyignore
           exit-code: 1
           skip-setup-trivy: true
+          cache: false
 
       - name: DEBUG - Trivy table output
         if: always()
