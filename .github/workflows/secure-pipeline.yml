@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: ${{ env.APP_DIR }}
@@ -88,7 +88,7 @@ jobs:
         run: docker build -t "${{ env.IMAGE_TAG }}" "${{ env.APP_DIR }}"
 
       - name: Scan built image with Trivy
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
         # Fail policy: HARD BLOCK on CRITICAL/HIGH with a known fix only.
         # Unfixed CVEs (residual OS-level findings in base image) are logged via SARIF but do not block.
@@ -101,7 +101,7 @@ jobs:
           exit-code: 1
 
       - name: Setup Trivy CLI for debug
-        uses: aquasecurity/setup-trivy@v0.2.0
+        uses: aquasecurity/setup-trivy@v0.2.6
         with:
           version: v0.72.0
       - name: DEBUG - Trivy table output
