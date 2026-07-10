@@ -8,7 +8,7 @@ description = "Known/intentional findings — not real leaked secrets"
 paths = [
   '''bonus-demo/insecure-deployment-for-demo\.yaml''',
   '''deploy/sealedsecret-ledger-api\.yaml''',
-  '''deployment\.yaml'''
+  '''deployment\.yaml''',
   '''docs/proofs/cosign-verify-proof\.json'''
 
 ]
