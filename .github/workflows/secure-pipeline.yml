@@ -139,3 +139,27 @@ jobs:
             --predicate <(echo '{"buildType":"github-actions","builder":{"id":"${{ github.workflow }}"},"invocation":{"configSource":{"uri":"${{ github.repository }}","digest":{"sha1":"${{ github.sha }}"}}}}') \
             --type slsaprovenance \
             "${{ env.IMAGE_TAG }}"
+
+  update-manifest:
+    name: Update deploy manifest with new image tag
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Update image tag in deployment manifest
+        run: |
+          sed -i -E "s#image: (ledger-api:starter|ghcr.io/kulkarnisristi/ledger-api:[a-f0-9]+)#image: ghcr.io/kulkarnisristi/ledger-api:${{ github.sha }}#" \
+            task1-harden-workload/deploy/04-deployment.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add task1-harden-workload/deploy/04-deployment.yaml
+          git commit -m "chore: bump ledger-api image to ${{ github.sha }}" || echo "No changes to commit"
+          git push
