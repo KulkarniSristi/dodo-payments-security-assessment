@@ -14,7 +14,7 @@ permissions:
   security-events: write # required to upload SARIF to Security tab
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/ledger-api
+  IMAGE_NAME: ghcr.io/kulkarnisristi/ledger-api
   APP_DIR: ./task1-harden-workload/app
 
 jobs:
