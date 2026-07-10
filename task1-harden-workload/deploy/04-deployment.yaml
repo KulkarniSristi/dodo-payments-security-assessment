@@ -28,7 +28,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: ledger-api
-          image: ghcr.io/kulkarnisristi/ledger-api:d5adca153daf716becb9bc9d5d963afad343835a
+          image: ghcr.io/kulkarnisristi/ledger-api:1b091f8b11150fed9e47dac9166983b9654f51e4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
