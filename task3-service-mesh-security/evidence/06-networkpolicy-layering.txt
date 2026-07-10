@@ -1,0 +1,17 @@
+$ kubectl get networkpolicy -n payments
+NAME                                  POD-SELECTOR     AGE
+allow-dns-egress                      <none>           30h
+allow-ingress-to-ledger-api           app=ledger-api   30h
+allow-intra-namespace-egress          <none>           30h
+allow-intra-namespace-to-ledger-api   app=ledger-api   30h
+allow-istio-control-plane-egress      <none>           30h
+default-deny-all                      <none>           30h
+
+$ kubectl get authorizationpolicy -n payments
+NAME                            ACTION   AGE
+allow-reporting-to-ledger-api   ALLOW    29h
+default-deny-all                        29h
+
+$ kubectl get peerauthentication -n payments
+NAME      MODE     AGE
+default   STRICT   29h

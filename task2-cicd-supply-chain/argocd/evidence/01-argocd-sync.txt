@@ -1,0 +1,250 @@
+Name:         ledger-api
+Namespace:    argocd
+Labels:       <none>
+Annotations:  <none>
+API Version:  argoproj.io/v1alpha1
+Kind:         Application
+Metadata:
+  Creation Timestamp:  2026-07-10T17:25:56Z
+  Generation:          19
+  Resource Version:    123673
+  UID:                 ea351148-3099-430a-9ac8-64679e030732
+Spec:
+  Destination:
+    Namespace:  payments
+    Server:     https://kubernetes.default.svc
+  Project:      default
+  Source:
+    Path:             task1-harden-workload/deploy
+    Repo URL:         https://github.com/KulkarniSristi/dodo-payments-security-assessment.git
+    Target Revision:  main
+  Sync Policy:
+    Automated:
+      Prune:      true
+      Self Heal:  true
+    Sync Options:
+      CreateNamespace=true
+Status:
+  Controller Namespace:  argocd
+  Health:
+    Last Transition Time:  2026-07-10T17:28:28Z
+    Status:                Healthy
+  History:
+    Deploy Started At:  2026-07-10T17:26:16Z
+    Deployed At:        2026-07-10T17:26:28Z
+    Id:                 0
+    Initiated By:
+      Automated:  true
+    Revision:     e34540c5b5c03522f8033ac3ee99cb19d3159769
+    Source:
+      Path:             task1-harden-workload/deploy
+      Repo URL:         https://github.com/KulkarniSristi/dodo-payments-security-assessment.git
+      Target Revision:  main
+  Operation State:
+    Finished At:  2026-07-10T17:28:26Z
+    Message:      successfully synced (all tasks run)
+    Operation:
+      Initiated By:
+        Automated:  true
+      Retry:
+        Limit:  5
+      Sync:
+        Auto Heal Attempts Count:  1
+        Prune:                     true
+        Resources:
+          Group:   apps
+          Kind:    Deployment
+          Name:    ledger-api
+        Revision:  e34540c5b5c03522f8033ac3ee99cb19d3159769
+        Source:
+          Path:             task1-harden-workload/deploy
+          Repo URL:         https://github.com/KulkarniSristi/dodo-payments-security-assessment.git
+          Target Revision:  main
+        Sync Options:
+          CreateNamespace=true
+    Phase:       Succeeded
+    Started At:  2026-07-10T17:28:20Z
+    Sync Result:
+      Resources:
+        Group:       apps
+        Hook Phase:  Running
+        Images:
+          ledger-api:starter
+        Kind:        Deployment
+        Message:     deployment.apps/ledger-api configured
+        Name:        ledger-api
+        Namespace:   payments
+        Status:      Synced
+        Sync Phase:  Sync
+        Version:     v1
+      Revision:      e34540c5b5c03522f8033ac3ee99cb19d3159769
+      Source:
+        Path:              task1-harden-workload/deploy
+        Repo URL:          https://github.com/KulkarniSristi/dodo-payments-security-assessment.git
+        Target Revision:   main
+  Reconciled At:           2026-07-10T17:28:28Z
+  Resource Health Source:  appTree
+  Resources:
+    Kind:       ConfigMap
+    Name:       ledger-api-config
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Kind:       Namespace
+    Name:       payments
+    Status:     Synced
+    Version:    v1
+    Kind:       Service
+    Name:       ledger-api
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Kind:       ServiceAccount
+    Name:       ledger-api
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Kind:       ServiceAccount
+    Name:       reporting
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      apps
+    Kind:       Deployment
+    Name:       ledger-api
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      apps
+    Kind:       Deployment
+    Name:       reporting
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      bitnami.com
+    Kind:       SealedSecret
+    Name:       ledger-api-secrets
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1alpha1
+    Group:      kyverno.io
+    Kind:       ClusterPolicy
+    Name:       disallow-latest-tag
+    Status:     Synced
+    Version:    v1
+    Group:      kyverno.io
+    Kind:       ClusterPolicy
+    Name:       disallow-root-user
+    Status:     Synced
+    Version:    v1
+    Group:      kyverno.io
+    Kind:       ClusterPolicy
+    Name:       require-image-signature
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       Ingress
+    Name:       ledger-api
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       NetworkPolicy
+    Name:       allow-dns-egress
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       NetworkPolicy
+    Name:       allow-ingress-to-ledger-api
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       NetworkPolicy
+    Name:       allow-intra-namespace-egress
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       NetworkPolicy
+    Name:       allow-intra-namespace-to-ledger-api
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       NetworkPolicy
+    Name:       allow-istio-control-plane-egress
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      networking.k8s.io
+    Kind:       NetworkPolicy
+    Name:       default-deny-all
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      rbac.authorization.k8s.io
+    Kind:       Role
+    Name:       ledger-api-role
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      rbac.authorization.k8s.io
+    Kind:       Role
+    Name:       payments-admin
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      rbac.authorization.k8s.io
+    Kind:       Role
+    Name:       payments-developer
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      rbac.authorization.k8s.io
+    Kind:       Role
+    Name:       payments-operator
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+    Group:      rbac.authorization.k8s.io
+    Kind:       RoleBinding
+    Name:       ledger-api-rolebinding
+    Namespace:  payments
+    Status:     Synced
+    Version:    v1
+  Source Hydrator:
+  Source Type:  Directory
+  Summary:
+    External URLs:
+      http://ledger-api.local/
+    Images:
+      curlimages/curl:8.8.0
+      ledger-api:starter
+      registry.istio.io/release/proxyv2:1.30.2
+  Sync:
+    Compared To:
+      Destination:
+        Namespace:  payments
+        Server:     https://kubernetes.default.svc
+      Source:
+        Path:             task1-harden-workload/deploy
+        Repo URL:         https://github.com/KulkarniSristi/dodo-payments-security-assessment.git
+        Target Revision:  main
+    Revision:             e34540c5b5c03522f8033ac3ee99cb19d3159769
+    Status:               Synced
+Events:
+  Type    Reason              Age    From                           Message
+  ----    ------              ----   ----                           -------
+  Normal  OperationStarted    3m29s  argocd-application-controller  Initiated automated sync to 'e34540c5b5c03522f8033ac3ee99cb19d3159769'
+  Normal  ResourceUpdated     3m29s  argocd-application-controller  Updated sync status:  -> OutOfSync
+  Normal  ResourceUpdated     3m29s  argocd-application-controller  Updated health status:  -> Healthy
+  Normal  ResourceUpdated     3m17s  argocd-application-controller  Updated sync status: OutOfSync -> Synced
+  Normal  OperationCompleted  3m17s  argocd-application-controller  Sync operation to e34540c5b5c03522f8033ac3ee99cb19d3159769 succeeded
+  Normal  OperationStarted    85s    argocd-application-controller  Initiated automated sync to 'e34540c5b5c03522f8033ac3ee99cb19d3159769'
+  Normal  ResourceUpdated     85s    argocd-application-controller  Updated sync status: Synced -> OutOfSync
+  Normal  ResourceUpdated     85s    argocd-application-controller  Updated health status: Healthy -> Progressing
+  Normal  OperationCompleted  78s    argocd-application-controller  Partial sync operation to e34540c5b5c03522f8033ac3ee99cb19d3159769 succeeded
+  Normal  ResourceUpdated     78s    argocd-application-controller  Updated sync status: OutOfSync -> Synced
+  Normal  ResourceUpdated     77s    argocd-application-controller  Updated health status: Progressing -> Healthy

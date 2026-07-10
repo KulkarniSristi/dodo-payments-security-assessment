@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"Role","metadata":{"annotations":{},"name":"ledger-api-role","namespace":"payments"},"rules":[]}
+  creationTimestamp: "2026-07-09T11:51:32Z"
+  name: ledger-api-role
+  namespace: payments
+  resourceVersion: "1241"
+  uid: d53f39ff-3ff7-48d7-a9e7-46b3544ffa85
+rules: null

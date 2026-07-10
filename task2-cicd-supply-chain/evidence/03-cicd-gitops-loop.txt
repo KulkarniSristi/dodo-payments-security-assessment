@@ -1,0 +1,5 @@
+NAME         SYNC STATUS   HEALTH STATUS   REVISION                                   PROJECT
+ledger-api   Synced        Healthy         f5dec724b9f8e2a447425e44a877dfeba151ec99   default
+46990e1 chore: bump ledger-api image to d5adca153daf716becb9bc9d5d963afad343835a
+180bb8c Task 3: harden reporting deployment securityContext for PSS restricted + Istio sidecar compatibility; add istio-restart annotations
+a62349b Restructure into task1-harden-workload folder; add RBAC personas and fix securityContext for PSS restricted compliance

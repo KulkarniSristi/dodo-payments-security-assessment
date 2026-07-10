@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: ledger-api
-          image: ledger-api:starter
+          image: ghcr.io/bhabani-dodo/ledger-api:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: STRIPE_API_KEY

@@ -1,0 +1,14 @@
+Rolling update from ledger-api:starter -> ghcr.io/kulkarnisristi/ledger-api:d5adca153daf716becb9bc9d5d963afad343835a
+
+$ kubectl get pods -n payments -l app=ledger-api -o jsonpath='{.items[*].spec.containers[?(@.name=="ledger-api")].image}'
+ghcr.io/kulkarnisristi/ledger-api:d5adca153daf716becb9bc9d5d963afad343835a ghcr.io/kulkarnisristi/ledger-api:d5adca153daf716becb9bc9d5d963afad343835a ghcr.io/kulkarnisristi/ledger-api:d5adca153daf716becb9bc9d5d963afad343835a
+
+$ kubectl get pods -n payments -l app=ledger-api
+NAME                          READY   STATUS    RESTARTS   AGE
+ledger-api-698dd89746-58dh8   2/2     Running   0          26m
+ledger-api-698dd89746-jzj9f   2/2     Running   0          25m
+ledger-api-698dd89746-zcphg   2/2     Running   0          25m
+
+Confirms full CI -> CD -> GitOps loop: pipeline built/signed/pushed new image,
+update-manifest job bumped the deployment manifest, ArgoCD auto-synced,
+rolling update completed cleanly with no restarts.

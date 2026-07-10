@@ -29,3 +29,13 @@
 ## Design decisions / trade-offs
 - `require-image-signature` policy set to **Audit**, not Enforce, since images aren't signed yet at this stage (Task 2 implements Cosign signing). Will tighten to Enforce after Task 2.
 - NetworkPolicy enforcement gap on kind is a platform limitation, not a design flaw — documented rather than masked. Calico could be installed for full enforcement but was deprioritized given time constraints and that Task 3 (Istio) provides real enforcement proof.
+
+### RBAC Scoping Note
+`ledger-api` is granted a dedicated ServiceAccount (`ledger-api`) bound to a
+Role (`ledger-api-role`) with an intentionally empty `rules: []`. The
+application does not call the Kubernetes API at runtime (verified: no
+client-go/kubectl/K8s SDK usage in app.py), so the least-privilege outcome is
+zero API permissions rather than narrowly-scoped ones. If the pod is
+compromised, the ServiceAccount token grants no access to any cluster
+resource. This is distinct from using the `default` ServiceAccount, which
+Kubernetes auto-mounts with implicit cluster context even when unused.

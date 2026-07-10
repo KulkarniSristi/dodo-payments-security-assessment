@@ -1,0 +1,11 @@
+Istio mTLS certificate inspection - ledger-api-698dd89746-58dh8 (payments namespace)
+
+$ istioctl proxy-config secret ledger-api-698dd89746-58dh8 -n payments -o json | jq '.dynamicActiveSecrets[0].secret.tlsCertificate.certificateChain.inlineBytes' -r | base64 -d | openssl x509 -noout -issuer -subject -dates
+issuer=O=cluster.local
+subject=
+notBefore=Jul 10 17:50:33 2026 GMT
+notAfter=Jul 11 17:52:33 2026 GMT
+
+Confirms: workload certificate issued by Istio's default self-signed CA (cluster.local root,
+managed by istiod), with a default ~24-hour validity window. istiod automatically rotates
+this cert before expiry with no manual intervention.

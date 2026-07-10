@@ -1,0 +1,7 @@
+Error from server: admission webhook "validate.kyverno.svc-fail" denied the request:
+resource Deployment/payments/ledger-api was blocked due to the following policies
+disallow-root-user:
+  autogen-require-run-as-non-root: 'validation error: Containers must set securityContext.runAsNonRoot=true,
+    either at pod level or per-container (missing entirely is rejected). rule autogen-require-run-as-non-root[0]
+    failed at path /spec/template/spec/securityContext/runAsNonRoot/ rule autogen-require-run-as-non-root[1]
+    failed at path /spec/template/spec/containers/0/securityContext/'
