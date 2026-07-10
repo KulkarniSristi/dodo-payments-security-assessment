@@ -106,6 +106,7 @@ jobs:
           exit-code: 1
           skip-setup-trivy: true
           cache: false
+          limit-severities-for-sarif: true
 
       - name: DEBUG - Trivy table output
         if: always()
