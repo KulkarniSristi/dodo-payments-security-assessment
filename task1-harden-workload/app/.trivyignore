@@ -1,0 +1,6 @@
+# Fixed upstream in Debian but not yet rebuilt into gcr.io/distroless/python3-debian12:latest.
+# Verified via local trivy image scan on 2026-07-10. Re-check on next distroless base image refresh.
+CVE-2026-40355
+CVE-2026-40356
+CVE-2026-45447
+CVE-2025-13836

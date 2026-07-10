@@ -97,6 +97,7 @@ jobs:
           output: trivy-image-results.sarif
           severity: CRITICAL,HIGH
           ignore-unfixed: true
+          trivyignores: ${{ env.APP_DIR }}/.trivyignore
           exit-code: 1
 
       - name: Upload image scan SARIF
