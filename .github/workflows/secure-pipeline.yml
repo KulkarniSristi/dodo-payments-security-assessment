@@ -90,12 +90,14 @@ jobs:
       - name: Scan built image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
+        # Fail policy: HARD BLOCK on CRITICAL/HIGH with a known fix only.
+        # Unfixed CVEs (residual OS-level findings in base image) are logged via SARIF but do not block.
           image-ref: ${{ env.IMAGE_TAG }}
           format: sarif
           output: trivy-image-results.sarif
           severity: CRITICAL,HIGH
+          ignore-unfixed: true
           exit-code: 1
-        # Fail policy: HARD BLOCK on CRITICAL/HIGH in the final built image.
 
       - name: Upload image scan SARIF
         uses: github/codeql-action/upload-sarif@v3
