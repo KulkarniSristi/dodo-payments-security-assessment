@@ -46,6 +46,10 @@ Pipeline run built/signed/pushed a new image, the update-manifest job committed 
 
 Evidence: evidence/03-cicd-gitops-loop.txt, evidence/04-rollout-complete.txt
 
+![Full CI -> CD -> GitOps loop, 5 jobs green](../docs/screenshots/task2-pipeline-full-loop-green.png)
+
+Screenshot shows all 5 jobs passing in one run (Gitleaks, Semgrep, Trivy, Build/scan/sign/push, Update deploy manifest with new image tag) - the complete pipeline including the update-manifest job that closes the GitOps loop, not just the build/scan/sign stages.
+
 ## Known issue encountered & fixed
 
 Our own Task 1 Kyverno disallow-root-user / disallow-latest-tag / require-image-signature ClusterPolicies initially blocked ArgoCD's own control-plane pods (e.g. dex-server, redis, notifications-controller) from being created or synced, since ArgoCD's upstream manifests don't set runAsNonRoot and aren't signed with our Cosign key. Fixed by adding namespace exclude blocks to all three policies for argocd and kube-system - cluster-wide security guardrails should exempt system/infra namespaces we don't control the manifests for, while still enforcing strictly on application namespaces like payments.
